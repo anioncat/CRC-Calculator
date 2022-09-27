@@ -14,7 +14,7 @@ def get_bin_str_inp() -> tuple:
         for c in user_input:
             # Check for bin string
             if c != "0" and c != "1":
-                print(f"Character {c} detected. Wrong format.")
+                print(f"Character {c} detected. Wrong format.\n")
                 valid = False
                 break
         if not valid:

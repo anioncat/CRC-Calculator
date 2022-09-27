@@ -1,9 +1,9 @@
-from cli.menus import validate_crc_menu, crc_standard_menu
+from cli.menus import codeword_menu, crc_standard_menu
 from crc_calculation import crc_calculator
 
 
 def crc_validation():
-    codeword = validate_crc_menu.get_val_codeword()
+    codeword = codeword_menu.get_codeword()
     if codeword is None:
         print()
         return

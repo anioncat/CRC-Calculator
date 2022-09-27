@@ -30,27 +30,6 @@ def calc_crc(
     return codeword
 
 
-def _get_crc_code(msg: int, msg_len: int, divisor: int, verbose: bool = True) -> int:
-    """Convert the message into a codeword, appending 0's need for the CRC.
-    Then calculates the CRC and returns the codeword
-
-    Args:
-        msg (int): The message to validate.
-        msg_len (int): The length of the message (including leading 0s).
-        divisor (int): The divisor for checking.
-        verbose (bool, optional): Whether to print steps. Defaults to True.
-
-    Returns:
-        int: The codeword
-    """
-    crc_len = utils.get_bin_length(divisor) - 1
-    # Bitshift divisor len - 1
-    code = msg << crc_len
-    if verbose:
-        print(f"Appending {crc_len} zeros")
-    return calc_crc(code, divisor, msg_len + crc_len, verbose=verbose)
-
-
 def get_codeword(
     msg: int, msg_len: int, divisor: int, divisor_len: int, verbose: bool = True
 ) -> int:
@@ -66,11 +45,17 @@ def get_codeword(
     Returns:
         int: The message with CRC check appened
     """
-    crc = _get_crc_code(msg, msg_len, divisor, verbose=verbose)
+    crc_len = utils.get_bin_length(divisor) - 1
+    # Bitshift divisor len - 1
+    code = msg << crc_len
+    if verbose:
+        print(f"Appending {crc_len} zeros")
+    crc = calc_crc(code, divisor, msg_len + crc_len, verbose=verbose)
     print()
     print(f"CRC Code: {' ' * msg_len}{crc:0{divisor_len}b}")
     # Append CRC to message
     code_word = msg << divisor_len | crc
+    memo.store_codeword(code_word, msg_len + crc_len)
     return code_word
 
 
@@ -80,7 +65,7 @@ def check_codeword(codeword: int, divisor: int, verbose: bool = True):
         codeword, divisor, utils.get_bin_length(codeword), verbose=verbose
     )
     if crc_chk == 0:
-        memo.store_codeword(codeword)
+        memo.store_codeword(codeword, utils.get_bin_length(codeword))
     print()
     print(
         f"Check result: {crc_chk:0{memo.divisor_msb}b}, [[{utils.TextColours.colour_val_result(crc_chk == 0)}]]"

@@ -4,6 +4,7 @@ from memory.crc_standards import CrcStandards
 class Memory:
     has_codeword_memory: bool = False
     codeword: int = 0
+    codeword_len: int = 0
 
     has_crc_memory: bool = False
     divisor: int = 0
@@ -19,9 +20,10 @@ class Memory:
         self.divisor_msb = CrcStandards.get_msb(index)
         self.has_crc_memory = True
 
-    def store_codeword(self, codeword: int):
+    def store_codeword(self, codeword: int, codeword_len: int):
         self.has_codeword_memory = True
         self.codeword = codeword
+        self.codeword_len = codeword_len
 
     def create_poly_str(self) -> str:
         """Converts the divisor in memory into polynomial form
