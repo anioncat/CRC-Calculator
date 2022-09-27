@@ -8,7 +8,7 @@ def menu():
             """==== MAIN MENU ====
 Please enter the menu item number followed by enter (e.g. h).
 
-1 - CRC conversion
+1 - CRC calculation
 2 - CRC validation
 3 - Credits
 h - Information
